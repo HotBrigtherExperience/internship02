@@ -4,15 +4,78 @@ DELETE FROM ANGAJATI;
 DELETE FROM PRODUSE;
 DELETE FROM TRANZACTII;
 
-INSERT INTO OFICII VALUES('BL', 'Beltsy', 'nord', 'ML');
-INSERT INTO OFICII VALUES('C', 'Kishiew', 'centru', 'VD');
-INSERT INTO OFICII VALUES('CH', 'Cahul', 'sud', 'HI');
-INSERT INTO OFICII VALUES('ED', 'Edinets', 'nord', 'ML');
-INSERT INTO OFICII VALUES('GL', 'Glodeni', 'nord', 'ML');
-INSERT INTO OFICII VALUES('OR', 'Orhei', 'centru', 'LV');
-INSERT INTO OFICII VALUES('RZ', 'Rezina', 'nord', 'SD');
-INSERT INTO OFICII VALUES('SR', 'Soroca', 'nord', 'BN');
-INSERT INTO OFICII VALUES('UN', 'Ungheni', 'centru', 'VD');
+INSERT INTO OFICII VALUES('BL', 'Beltsy', 'nord', null);
+INSERT INTO OFICII VALUES('C', 'Kishiew', 'centru', null);
+INSERT INTO OFICII VALUES('CH', 'Cahul', 'sud', null);
+INSERT INTO OFICII VALUES('ED', 'Edinets', 'nord', null);
+INSERT INTO OFICII VALUES('GL', 'Glodeni', 'nord', null);
+INSERT INTO OFICII VALUES('OR', 'Orhei', 'centru', null);
+INSERT INTO OFICII VALUES('RZ', 'Rezina', 'nord', null);
+INSERT INTO OFICII VALUES('SR', 'Soroca', 'nord', null);
+INSERT INTO OFICII VALUES('UN', 'Ungheni', 'centru', null);
+
+INSERT INTO ANGAJATI VALUES ('BC','Bucataru','Constantin',31,'contabil','SR',TO_DATE('18.01.2001','dd.mm.yyyy'),0);
+INSERT INTO ANGAJATI VALUES ('BN','Bucur','Nicolae',27,'manager','SR',TO_DATE('31.01.2001','dd.mm.yyyy'),28000);
+INSERT INTO ANGAJATI VALUES ('CI','Cozma','Ion',20,'reprezentant','OR',TO_DATE('17.11.2001','dd.mm.yyyy'),2000);
+INSERT INTO ANGAJATI VALUES ('DE','Dodon','Elena',34,'contabil','ED',TO_DATE('20.02.2000','dd.mm.yyyy'),0);
+INSERT INTO ANGAJATI VALUES ('DR','Dutca','Radion',33,'reprezentant','GL',TO_DATE('12.12.1999','dd.mm.yyyy'),3250);
+INSERT INTO ANGAJATI VALUES ('FE','Frumosu','Emilia',37,'contabil','ED',TO_DATE('12.02.1998','dd.mm.yyyy'),0);
+INSERT INTO ANGAJATI VALUES ('FN','Florea','Nicoleta',23,'reprezentant','BL',TO_DATE('13.06.2000','dd.mm.yyyy'),2500);
+INSERT INTO ANGAJATI VALUES ('GC','Grosu','Corina',19,'reprezentant','RZ',TO_DATE('04.04.2000','dd.mm.yyyy'),1900);
+INSERT INTO ANGAJATI VALUES ('GI','Gomoja','Ilie',32,'reprezentant','CH',TO_DATE('13.07.2005','dd.mm.yyyy'),3250);
+INSERT INTO ANGAJATI VALUES ('GL','Grosu','Leonid',23,'reprezentant','ED',TO_DATE('28.03.2000','dd.mm.yyyy'),2500);
+INSERT INTO ANGAJATI VALUES ('GM','Grosu','Mihai',42,'sef','C',TO_DATE('07.02.1998','dd.mm.yyyy'),0);
+INSERT INTO ANGAJATI VALUES ('GT','Graur','Teodor',35,'reprezentant','SR',TO_DATE('18.08.2004','dd.mm.yyyy'),35000);
+INSERT INTO ANGAJATI VALUES ('HI','Harea','Igor',25,'manager','CH',TO_DATE('30.03.2003','dd.mm.yyyy'),22000);
+INSERT INTO ANGAJATI VALUES ('LA','Lungu','Alexandru',43,'sef adjunct','C',TO_DATE('07.02.1998','dd.mm.yyyy'),0);
+INSERT INTO ANGAJATI VALUES ('LV','Lisnic','Vladimir',29,'manager','OR',TO_DATE('13.09.2001','dd.mm.yyyy'),351);
+INSERT INTO ANGAJATI VALUES ('ML','Mutu','Livia',38,'manager','BL',TO_DATE('09.02.1999','dd.mm.yyyy'),15000);
+INSERT INTO ANGAJATI VALUES ('MS','Mutu','Sorina',35,'reprezentant','UN',TO_DATE('06.04.2004','dd.mm.yyyy'),3500);
+INSERT INTO ANGAJATI VALUES ('NV','Nanu','Vasile',45,'reprezentant','C',TO_DATE('09.02.1998','dd.mm.yyyy'),4500);
+INSERT INTO ANGAJATI VALUES ('PI','Prisacaru','Inga',27,'reprezentant','UN',TO_DATE('18.03.2001','dd.mm.yyyy'),2750);
+INSERT INTO ANGAJATI VALUES ('RD','Rusu','Dorina',35,'reprezentant','OR',TO_DATE('18.09.2001','dd.mm.yyyy'),3500);
+INSERT INTO ANGAJATI VALUES ('SA','Speriatu','Ana',31,'contabil','GL',TO_DATE('15.01.2003','dd.mm.yyyy'),0);
+INSERT INTO ANGAJATI VALUES ('SD','Spada','Doru',29,'manager','RZ',TO_DATE('12.01.2003','dd.mm.yyyy'),18000);
+INSERT INTO ANGAJATI VALUES ('SM','Surdu','Mihaela',25,'reprezentant','BL',TO_DATE('13.09.2001','dd.mm.yyyy'),20000);
+INSERT INTO ANGAJATI VALUES ('VD','Vieru','Dorin',32,'manager','C',TO_DATE('08.08.1998','dd.mm.yyyy'),80000);
+INSERT INTO ANGAJATI VALUES ('VI','Vrabie','Ion',42,'contabil','RZ',TO_DATE('18.10.2002','dd.mm.yyyy'),0);
+
+UPDATE OFICII
+SET Cod_manager = 'ML'
+WHERE Cod_oficiu = 'BL';
+
+UPDATE OFICII
+SET Cod_manager = 'VD'
+WHERE Cod_oficiu = 'C';
+
+UPDATE OFICII
+SET Cod_manager = 'HI'
+WHERE Cod_oficiu = 'CH';
+
+UPDATE OFICII
+SET Cod_manager = 'ML'
+WHERE Cod_oficiu = 'ED';
+
+UPDATE OFICII
+SET Cod_manager = 'ML'
+WHERE Cod_oficiu = 'GL';
+
+UPDATE OFICII
+SET Cod_manager = 'LV'
+WHERE Cod_oficiu = 'OR';
+
+UPDATE OFICII
+SET Cod_manager = 'SD'
+WHERE Cod_oficiu = 'RZ';
+
+UPDATE OFICII
+SET Cod_manager = 'BN'
+WHERE Cod_oficiu = 'SR';
+
+UPDATE OFICII
+SET Cod_manager = 'VD'
+WHERE Cod_oficiu = 'UN';
+
 
 INSERT INTO COMPANII VALUES ('AL','Auto Lada', 'NV',7500.00);
 INSERT INTO COMPANII VALUES ('AS','Asito', 'PI',26000.00);
@@ -34,31 +97,27 @@ INSERT INTO COMPANII VALUES ('TU','Tutun Ind', 'GL',1000.00);
 INSERT INTO COMPANII VALUES ('VT','Vitanta', 'GI',800.00);
 INSERT INTO COMPANII VALUES ('ZO','Zorile', 'GT',22890.00);
 
-INSERT INTO ANGAJATI VALUES ('BC','Bucataru','Constantin',31,'contabil','SR',TO_DATE('18.01.2001','dd.mm.yyyy'),0);
-INSERT INTO ANGAJATI VALUES ('BN','Bucur','Nicolae',27,'manager','SR',TO_DATE('31.01.2001','dd.mm.yyyy'),28000);
-INSERT INTO ANGAJATI VALUES ('CI','Cozma','Ion',20,'reprezentant','OR',TO_DATE('17.11.2001','dd.mm.yyyy'),2000);
-INSERT INTO ANGAJATI VALUES ('DE','Dodon','Elena',34,'contabil','ED',TO_DATE('20.02.2000','dd.mm.yyyy'),0);
-INSERT INTO ANGAJATI VALUES ('DR','Dutca','Radion',33,'reprezentant','GL',TO_DATE('12.12.1999','dd.mm.yyyy'),3250);
-INSERT INTO ANGAJATI VALUES ('FE','Frumosu','Emilia',37,'contabil','ED',TO_DATE('12.02.1998','dd.mm.yyyy'),0);
-INSERT INTO ANGAJATI VALUES ('FN','Florea','Nicoleta',23,'reprezentant','BL',TO_DATE('13.06.2000','dd.mm.yyyy'),2500);
-INSERT INTO ANGAJATI VALUES ('GC','Grosu','Corina',19,'reprezentant','RZ',TO_DATE('04.04.2000','dd.mm.yyyy'),1900);
-INSERT INTO ANGAJATI VALUES ('GI','Gomoja','Ilie',32,'reprezentant','CH',TO_DATE('13.07.2005','dd.mm.yyyy'),3250);
-INSERT INTO ANGAJATI VALUES ('GL','Grosu','Leonid',23,'reprezentant','ED',TO_DATE('28.03.2000','dd.mm.yyyy'),2500);
-INSERT INTO ANGAJATI VALUES ('GM','Grosu','Mihai',42,'sef','C',TO_DATE('07.02.1998','dd.mm.yyyy'),0);
-INSERT INTO ANGAJATI VALUES ('GT','Graur','Teodor',35,'reprezentant','SR',TO_DATE('18.08.2004','dd.mm.yyyy'),35000);
-INSERT INTO ANGAJATI VALUES ('HI','Harea','Igor',25,'manager','CH',TO_DATE('30.03.2003','dd.mm.yyyy'),22000);
-INSERT INTO ANGAJATI VALUES ('LA','Lungu','Alexandru',43,'sef adjunct','C',TO_DATE('07.02.1998','dd.mm.yyyy'),0);
-INSERT INTO ANGAJATI VALUES ('LV','Lisnic','Vladimir',29,'manager','OR',TO_DATE('13.09.2001','dd.mm.yyyy'),351);
-INSERT INTO ANGAJATI VALUES ('ML','Mutu','Livia',38,'manager','BL',TO_DATE('09.02.19999','dd.mm.yyyy'),15000);
-INSERT INTO ANGAJATI VALUES ('MS','Mutu','Sorina',35,'reprezentant','UN',TO_DATE('06.04.2004','dd.mm.yyyy'),3500);
-INSERT INTO ANGAJATI VALUES ('NV','Nanu','Vasile',45,'reprezentant','C',TO_DATE('09.02.1998','dd.mm.yyyy'),4500);
-INSERT INTO ANGAJATI VALUES ('PI','Prisacaru','Inga',27,'reprezentant','UN',TO_DATE('18.03.2001','dd.mm.yyyy'),2750);
-INSERT INTO ANGAJATI VALUES ('RD','Rusu','Dorina',35,'reprezentant','OR',TO_DATE('18.09.2001','dd.mm.yyyy'),3500);
-INSERT INTO ANGAJATI VALUES ('SA','Speriatu','Ana',31,'contabil','GL',TO_DATE('15.01.2003','dd.mm.yyyy'),0);
-INSERT INTO ANGAJATI VALUES ('SD','Spada','Doru',29,'manager','RZ',TO_DATE('12.01.2003','dd.mm.yyyy'),18000);
-INSERT INTO ANGAJATI VALUES ('SM','Surdu','Mihaela',25,'reprezentant','BL',TO_DATE('13.09.2001','dd.mm.yyyy'),20000);
-INSERT INTO ANGAJATI VALUES ('VD','Vieru','Dorin',32,'manager','C',TO_DATE('08.08.1998','dd.mm.yyyy'),80000);
-INSERT INTO ANGAJATI VALUES ('VI','Vrabie','Ion',42,'contabil','RZ',TO_DATE('18.10.2002','dd.mm.yyyy'),0);
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor LG 17',100.00,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 15',50.00,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Televizor JVS 54cm',280.00,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Procesor Pentium 4',130.00,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Procesor Celeron 2000',125.00,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Mouse Genius optic',4.00,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Mouse Logitech optic',5.00,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Televizor Sony 72cm',485.00,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'DVD Sony 50',75.00,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'DVD Sony 32-16-32',135.00,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'CD-R Benq 700MB',0.10,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'CD-RW Benq 700MB',0.25,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Tastatura Logitech alba',6.75,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Tastatura Logitech neagra',9.75,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 17',85.50,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 21',109.50,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 15',35.50,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Televizor Alfa 51cm',100.40,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Polar 54cm',100.00,'N');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Filtru Sven 220V',3.75,'Y');
+INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Telefon Siemens A55',85.00,'Y');
 
 INSERT INTO TRANZACTII VALUES (TO_DATE('01.01.2005','dd.mm.yyyy'),'BI','NV',7,5);
 INSERT INTO TRANZACTII VALUES (TO_DATE('01.01.2005','dd.mm.yyyy'),'IL','PI',15,4);
@@ -108,29 +167,6 @@ INSERT INTO TRANZACTII VALUES(TO_DATE('12.11.2005','dd.mm.yyyy'),'PE','BN',4,3);
 INSERT INTO TRANZACTII VALUES(TO_DATE('19.11.2005','dd.mm.yyyy'),'CA','PI',17,8);
 INSERT INTO TRANZACTII VALUES(TO_DATE('12.12.2005','dd.mm.yyyy'),'IL','GL',13,4);
 INSERT INTO TRANZACTII VALUES(TO_DATE('12.12.2005','dd.mm.yyyy'),'TI','GI',3,2);
-
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor LG 17',100.00,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 15',50.00,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Televizor JVS 54cm',280.00,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Procesor Pentium 4',130.00,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Procesor Celeron 2000',125.00,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Mouse Genius optic',4.00,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Mouse Logitech optic',5.00,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Televizor Sony 72cm',485.00,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'DVD Sony 50',75.00,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'DVD Sony 32-16-32',135.00,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'CD-R Benq 700MB',0.10,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'CD-RW Benq 700MB',0.25,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Tastatura Logitech alba',6.75,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Tastatura Logitech neagra',9.75,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 17',85.50,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 21',109.50,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 15',35.50,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Samsung 17',85.50,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Televizor Alfa 51cm',100.40,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Monitor Polar 54cm',100.00,'N');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Filtru Sven 220V',3.75,'Y');
-INSERT INTO PRODUSE VALUES (Cod_Prod.NEXTVAL, 'Telefon Siemens A55',85.00,'Y');
 
 COMMIT;
 

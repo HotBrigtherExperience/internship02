@@ -1,21 +1,13 @@
---create table LOGS
-
-DROP TABLE LOGS;
-CREATE TABLE LOGS
-(
-    ID NUMBER(3,0) PRIMARY KEY, 
-	OBJECT_NAME    VARCHAR2(50), 
-	CODE           VARCHAR2(50), 
-	MESSAGE        VARCHAR2(150)
-    
-);
- 
---create segventa 
-
-DROP SEQUENCE SEQUENCE_LOGS;
-CREATE SEQUENCE SEQUENCE_LOGS  MINVALUE 1 MAXVALUE 1000 INCREMENT BY 1 START WITH 101 CACHE 100 NOORDER  NOCYCLE ;
-
---3)grupati comenzile (tabela tranzactii) efectuate in anul 2005 in functie de produse
+SET SERVEROUTPUT ON
+--1) test: aflati numarul de angajati care au avut tranzactii in perioada  01.01.2005 - 28.02.2005
+--2)test: aflati numele vanzatorului care a avut cele mai multe vanzari (tranzactii)
+BEGIN
+DBMS_OUTPUT.PUT_LINE('Nr. tranzactii angajat:' ||' '||  VANZARI_ANGAJAT( TO_DATE('01-01-2005','DD-MM-YYYY'),  TO_DATE('28-02-2005','DD-MM-YYYY')));
+DBMS_OUTPUT.PUT_LINE('Nume angajat cu tranzactii maxime:' ||' '|| VANZATOR());
+END;
+/
+--3) test: procedure exception
+EXECUTE GRUPARE_COMENZI(2005);
 
 CREATE OR REPLACE PROCEDURE GRUPARE_COMENZI (p_an IN NUMBER) IS
 
@@ -34,7 +26,7 @@ SELECT PRODUSE.COD_PRODUS,
 FROM PRODUSE
 LEFT JOIN TRANZACTII ON (PRODUSE.COD_PRODUS=TRANZACTII.COD_PRODUS)
                         AND TO_CHAR(TRANZACTII.DATA_COMENZII,'YYYY') = TO_CHAR(AN)
-GROUP BY PRODUSE.COD_PRODUS, PRODUSE.DESCRIERE
+--GROUP BY PRODUSE.COD_PRODUS, PRODUSE.DESCRIERE
 ORDER BY  PRODUSE.COD_PRODUS;
 
 
@@ -59,21 +51,7 @@ EXCEPTION
     ROLLBACK;
 END GRUPARE_COMENZI;
 /
---create AUTONOMOUS_TRANSACTION
-CREATE OR REPLACE PROCEDURE WRITE_LOGS (p_name IN VARCHAR2,
-                                        p_code IN VARCHAR2,
-                                        p_message IN VARCHAR2)
-IS 
-PRAGMA AUTONOMOUS_TRANSACTION;
-BEGIN
-INSERT INTO LOGS
-    VALUES (SEQUENCE_LOGS.NEXTVAL,
-            p_name,
-            p_code,
-            p_message
-            );
-COMMIT;
-EXCEPTION 
-WHEN OTHERS 
-THEN ROLLBACK;
-END;
+--EXECUTE PROCEDURE 
+EXECUTE GRUPARE_COMENZI(2005);
+
+SELECT * FROM LOGS;

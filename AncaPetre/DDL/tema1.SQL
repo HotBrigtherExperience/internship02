@@ -1,64 +1,77 @@
-DROP TABLE Produse    CASCADE CONSTRAINTS;
-DROP TABLE Angajati   CASCADE CONSTRAINTS;
-DROP TABLE Oficii     CASCADE CONSTRAINTS;
-DROP TABLE Companii   CASCADE CONSTRAINTS;
-DROP TABLE Tranzactii CASCADE CONSTRAINTS;
-DROP SEQUENCE "INTERN_AP"."PK_PRODUSE";
+DROP TABLE intern_ap.produse    CASCADE CONSTRAINTS;
+DROP TABLE intern_ap.angajati   CASCADE CONSTRAINTS;
+DROP TABLE intern_ap.oficii     CASCADE CONSTRAINTS;
+DROP TABLE intern_ap.companii   CASCADE CONSTRAINTS;
+DROP TABLE intern_ap.tranzactii CASCADE CONSTRAINTS;
+DROP SEQUENCE intern_ap.pk_produse;
+DROP TABLE logs;
+DROP SEQUENCE intern_ap.sequence_logs;
 
-CREATE TABLE Produse 
+CREATE TABLE intern_ap.produse 
 (
-    Cod_produs  NUMERIC         PRIMARY KEY,
-    Descriere   VARCHAR2(100),
-    Pret        NUMERIC(8,2),
-    Exista      CHAR(1)
+    cod_produs  NUMERIC         PRIMARY KEY,
+    descriere   VARCHAR2(100),
+    pret        NUMERIC(8,2),
+    exista      CHAR(1)
 );
 
-CREATE SEQUENCE "INTERN_AP"."PK_PRODUSE"  MINVALUE 1 MAXVALUE 500 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
-CREATE TABLE Angajati
+CREATE SEQUENCE intern_ap.pk_produse  MINVALUE 1 MAXVALUE 500 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+CREATE TABLE intern_ap.angajati
 (
-    Cod_angajat             VARCHAR2(3) PRIMARY KEY,
-    Nume                    VARCHAR2(15),
-    Prenume                 VARCHAR2(15),
-    Varsta                  NUMERIC,
-    Functia                 VARCHAR2(20),
-    Cod_oficiu              VARCHAR2(3),
-    Data_angajarii          DATE,
-    Suma_planificata        NUMERIC(8,2)
+    cod_angajat             VARCHAR2(3) PRIMARY KEY,
+    nume                    VARCHAR2(15),
+    prenume                 VARCHAR2(15),
+    varsta                  NUMERIC,
+    functia                 VARCHAR2(20),
+    cod_oficiu              VARCHAR2(3),
+    data_angajarii          DATE,
+    suma_planificata        NUMERIC(8,2)
 );
 
 
-CREATE TABLE Oficii
+CREATE TABLE intern_ap.oficii
 (
-    Cod_oficiu              VARCHAR2(3) PRIMARY KEY,
-    Localitatea             VARCHAR2(15),
-    Regiunea                VARCHAR2(6),
-    Cod_manager             VARCHAR2(3)               REFERENCES Angajati(Cod_angajat) ON DELETE CASCADE
+    cod_oficiu              VARCHAR2(3) PRIMARY KEY,
+    localitatea             VARCHAR2(15),
+    regiunea                VARCHAR2(6),
+    cod_manager             VARCHAR2(3)               REFERENCES angajati(cod_angajat) ON DELETE CASCADE
 );
-ALTER TABLE     Angajati 
+ALTER TABLE     intern_ap.angajati 
 ADD CONSTRAINT  new_reference 
-    FOREIGN KEY(Cod_oficiu) 
-    REFERENCES Oficii(Cod_oficiu)   
+    FOREIGN KEY(cod_oficiu) 
+    REFERENCES oficii(cod_oficiu)   
     ON DELETE CASCADE;
 
 
-CREATE TABLE Companii
+CREATE TABLE intern_ap.companii
 (
-    Cod_companie            VARCHAR2(3) PRIMARY KEY,
-    Compania                VARCHAR2(15),
-    Reprezentant_companie   VARCHAR2(3), 
-    Datoria                 NUMERIC(8,2)
+    cod_companie            VARCHAR2(3) PRIMARY KEY,
+    compania                VARCHAR2(15),
+    reprezentant_companie   VARCHAR2(3), 
+    datoria                 NUMERIC(8,2)
 );
-ALTER TABLE     Companii 
+ALTER TABLE  intern_ap.companii 
 ADD CONSTRAINT  companii_reference 
-    FOREIGN KEY(Reprezentant_companie) 
-    REFERENCES Angajati(Cod_angajat) 
+    FOREIGN KEY(reprezentant_companie) 
+    REFERENCES angajati(cod_angajat) 
     ON DELETE CASCADE;
 
-CREATE TABLE Tranzactii
+CREATE TABLE intern_ap.Tranzactii
 (
-    Data_comenzii           DATE,
-    Cod_client              VARCHAR2(3)              REFERENCES Companii(Cod_companie) ON DELETE CASCADE,
-    Cod_vanzator            VARCHAR2(3)              REFERENCES Angajati(Cod_angajat)  ON DELETE CASCADE,
-    Cod_produs              NUMERIC                  REFERENCES Produse(Cod_produs)    ON DELETE CASCADE,
-    Cantitatea              NUMERIC
+    data_comenzii           DATE,
+    cod_client              VARCHAR2(3)              REFERENCES companii(cod_companie) ON DELETE CASCADE,
+    cod_vanzator            VARCHAR2(3)              REFERENCES angajati(cod_angajat)  ON DELETE CASCADE,
+    cod_produs              NUMERIC                  REFERENCES produse(cod_produs)    ON DELETE CASCADE,
+    cantitatea              NUMERIC
 );
+
+CREATE TABLE intern_ap.LOGS
+(
+    ID NUMBER(3,0) PRIMARY KEY, 
+	OBJECT_NAME    VARCHAR2(50), 
+	CODE           VARCHAR2(50), 
+	MESSAGE        VARCHAR2(150)
+    
+);
+ 
+CREATE SEQUENCE intern_ap.sequence_logs  MINVALUE 1 MAXVALUE 1000 INCREMENT BY 1 START WITH 101 CACHE 100 NOORDER  NOCYCLE ;

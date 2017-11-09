@@ -12,3 +12,4 @@ intern_ap.grupare_comenzi(2005);
 
 END;
 /
+SELECT * FROM logs;

@@ -13,7 +13,7 @@ BEGIN
                                                                                                         
     DBMS_OUTPUT.PUT_LINE('Al 3 Produs cu vanzari maxime: '|| ' ' ||record_val ||' '||' in cantitatea: ' ||nr_catitate1);
     
-    nr_catitate2 := intern_ap.PKG_EVIDENCE_PRODUCTS.datori('NV');
+    nr_catitate2 := intern_ap.PKG_EVIDENCE_PRODUCTS.datorii_reprezntant('NV');
     
     DBMS_OUTPUT.PUT_LINE('Datoriile reprezntantului NV sunt: '|| ' ' ||nr_catitate2);
 END;

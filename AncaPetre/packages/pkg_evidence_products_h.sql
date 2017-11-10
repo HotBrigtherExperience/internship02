@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE intern_ap.pkg_evidence_products  AS
 
 --SUBTYPE p_datorie IS NUMBER;
 
-  FUNCTION datori(p_reprez companii.compania%TYPE)
+  FUNCTION datorii_reprezntant(p_reprez companii.compania%TYPE)
      RETURN NUMBER;
   
   PROCEDURE vanzari_produse( p_data1 DATE, 

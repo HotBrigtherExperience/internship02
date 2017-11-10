@@ -1,9 +1,9 @@
-create or replace PACKAGE BODY intern_ap.pkg_evidence_products  IS
+CREATE OR REPLACE PACKAGE BODY intern_ap.pkg_evidence_products  IS
 
 C_PROCEDURE_NAME VARCHAR2(30) := 'VANZARI_PRODUSE';
-v_rank number; 
+v_rank NUMBER; 
 
-FUNCTION datori( p_reprez companii.compania%TYPE) 
+FUNCTION datorii_reprezntant( p_reprez companii.compania%TYPE) 
 RETURN NUMBER IS
 
 p_datorie NUMBER;

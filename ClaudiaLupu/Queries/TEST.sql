@@ -1,14 +1,14 @@
 SET SERVEROUTPUT ON
 DECLARE
-V_NUME produse.descriere%type; 
-V_CANTITATE tranzactii.cantitatea%type;
-V_DATORIE number;
-V_REPR_COMP ANGAJATI.COD_ANGAJAT%type;
-V_start date;
+v_nume produse.descriere%TYPE; 
+v_cantitate tranzactii.cantitatea%TYPE;
+v_datorie NUMBER;
+v_repr_comp angajati.cod_angajat%TYPE;
+v_start DATE;
 BEGIN
-  V_START := TO_DATE('01.01.2005','dd.mm.yyyy');
-  PKG_EVIDENCE_PRODUCTS.CL_THIRD_PRODUCT(V_START, TO_DATE('28.02.2005','dd.mm.yyyy'),V_NUME, V_CANTITATE);
-  V_REPR_COMP := 'GL';
-  v_DATORIE := PKG_EVIDENCE_PRODUCTS.CL_TOTAL_DATORII(V_REPR_COMP);
-  DBMS_OUTPUT.PUT_LINE('Datoria companiei reprezentanta de '|| V_REPR_COMP ||': '|| V_DATORIE);
+  v_start := TO_DATE('01.01.2005','dd.mm.yyyy');
+  pkg_evidence_products.cl_third_product(V_START, TO_DATE('28.02.2005','dd.mm.yyyy'),v_nume, v_cantitate);
+  v_repr_comp := 'GL';
+  v_datorie:= pkg_evidence_products.cl_total_datorii(v_repr_comp);
+  DBMS_OUTPUT.PUT_LINE('Datoria companiei reprezentata de '|| V_REPR_COMP ||': '|| v_datorie);
 END;

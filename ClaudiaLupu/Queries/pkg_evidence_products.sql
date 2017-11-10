@@ -1,17 +1,16 @@
-CREATE OR REPLACE PACKAGE CL_TEST 
+create or replace PACKAGE pkg_evidence_products
 AS 
 
 PROCEDURE CL_THIRD_PRODUCT(P_START IN DATE,
                            P_END IN DATE,
                            P_NAME OUT produse.descriere%TYPE,
                            P_CANTITATE OUT tranzactii.cantitatea%TYPE);
- 
-FUNCTION CL_TOTAL_DATORII (P_COD_COMP COMPANII.COD_COMPANIE%TYPE) RETURN NUMBER;
+                           
+ FUNCTION CL_TOTAL_DATORII (P_REPR_COMP ANGAJATI.COD_ANGAJAT%TYPE) RETURN NUMBER;
 
-END CL_TEST;
+END pkg_evidence_products;
 
-
-CREATE OR REPLACE PACKAGE BODY CL_TEST 
+create or replace PACKAGE BODY pkg_evidence_products
 IS
 
 PROCEDURE CL_THIRD_PRODUCT (P_START IN DATE,
@@ -30,19 +29,17 @@ PROCEDURE CL_THIRD_PRODUCT (P_START IN DATE,
     DBMS_OUTPUT.PUT_LINE ('Produsul cautat este: '|| P_NAME || ', cantitate vanduta: '||P_CANTITATE);
 END CL_THIRD_PRODUCT;
 
-
-FUNCTION CL_TOTAL_DATORII (P_COD_COMP COMPANII.COD_COMPANIE%TYPE)
+FUNCTION CL_TOTAL_DATORII (P_REPR_COMP ANGAJATI.COD_ANGAJAT%TYPE)
   RETURN NUMBER 
   IS 
-  V_DATORIE number;
+  V_DATORIE NUMBER;
   BEGIN
     SELECT  SUM(cp.DATORIA) INTO v_datorie
-    FROM companii cp, tranzactii tr
-    WHERE tr.cod_client = cp.cod_companie AND cp.cod_companie = P_COD_COMP
-    GROUP BY cod_companie;
-  
-   RETURN V_DATORIE;
+    FROM companii cp, ANGAJATI AG
+    WHERE CP.REPREZENTANT_COMPANIE = AG.COD_ANGAJAT AND AG.cod_angajat = P_REPR_COMP
+    GROUP BY AG.COD_ANGAJAT;
+    
+    RETURN V_DATORIE;
 END CL_TOTAL_DATORII;
 
-
-END CL_TEST; --package body end
+END pkg_evidence_products;

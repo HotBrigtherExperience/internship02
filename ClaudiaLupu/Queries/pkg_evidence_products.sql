@@ -1,19 +1,9 @@
-create or replace PACKAGE pkg_evidence_products
-AS 
-
-PROCEDURE CL_THIRD_PRODUCT(P_START IN DATE,
-                           P_END IN DATE,
-                           P_NAME OUT produse.descriere%TYPE,
-                           P_CANTITATE OUT tranzactii.cantitatea%TYPE);
-                           
- FUNCTION CL_TOTAL_DATORII (P_REPR_COMP ANGAJATI.COD_ANGAJAT%TYPE) RETURN NUMBER;
-
-END pkg_evidence_products;
-
-CREATE OR REPLACE PACKAGE BODY pkg_evidence_products
+create or replace PACKAGE BODY pkg_evidence_products
 IS
-
-PROCEDURE CL_THIRD_PRODUCT (p_start IN DATE,
+ v_cod NUMBER;
+ v_mesaj VARCHAR2(255);
+PROCEDURE CL_THIRD_PRODUCT (p_rang IN NUMBER,
+                            p_start IN DATE,
                             p_end IN DATE,
                             p_name OUT produse.descriere%TYPE,
                             p_cantitate OUT tranzactii.cantitatea%TYPE) 
@@ -24,9 +14,23 @@ PROCEDURE CL_THIRD_PRODUCT (p_start IN DATE,
           FROM tranzactii tr, produse pr
           WHERE pr.cod_produs = tr.cod_produs AND tr.data_comenzii BETWEEN p_start AND p_end
           GROUP BY pr.cod_produs, pr.descriere, pr.pret)
-    WHERE rang = 3;
-  
+    WHERE rang = p_rang;
+    
     DBMS_OUTPUT.PUT_LINE ('Produsul cautat este: '|| p_name || ', cantitate vanduta: '||p_cantitate);
+   
+    EXCEPTION 
+    WHEN no_data_found THEN 
+    DBMS_OUTPUT.PUT_LINE ('Nu exista un produs care sa indeplineasca conditiile dorite!');
+    v_cod := SQLCODE;
+    v_mesaj := SQLERRM;
+    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj); 
+    
+    WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Others');
+    v_cod := SQLCODE;
+    v_mesaj := SQLERRM;
+    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj);
+    
 END CL_THIRD_PRODUCT;
 
 FUNCTION CL_TOTAL_DATORII (p_repr_comp angajati.cod_angajat%TYPE)
@@ -34,12 +38,37 @@ FUNCTION CL_TOTAL_DATORII (p_repr_comp angajati.cod_angajat%TYPE)
   IS 
   v_datorie NUMBER;
   BEGIN
+   
     SELECT  SUM(cp.datoria) INTO v_datorie
-    FROM companii cp, ANGAJATI AG
+    FROM companii cp, angajati ag
     WHERE cp.reprezentant_companie = ag.cod_angajat AND ag.cod_angajat = p_repr_comp
     GROUP BY ag.cod_angajat;
+    DBMS_OUTPUT.PUT_LINE('Datoria companiei reprezentata de '|| p_repr_comp ||': '|| v_datorie);  
+  
+    RETURN v_datorie; 
     
-    RETURN v_datorie;
+    EXCEPTION  
+    WHEN NO_DATA_FOUND THEN 
+    DBMS_OUTPUT.PUT_LINE ('Angajatul cautat nu exista!');
+    v_cod := SQLCODE;
+    v_mesaj := SQLERRM;
+    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj);
+    RETURN NULL;
+    
+    WHEN VALUE_ERROR THEN
+    DBMS_OUTPUT.PUT_LINE('Cod invalid');
+    v_cod := SQLCODE;
+    v_mesaj := 'Value error';
+    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj);
+    RETURN NULL;
+    
+    WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Others');
+    v_cod := SQLCODE;
+    v_mesaj := SQLERRM;
+    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj);
+    RETURN NULL;
+    
 END CL_TOTAL_DATORII;
 
 END pkg_evidence_products; --package body end

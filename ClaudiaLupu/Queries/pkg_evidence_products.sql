@@ -1,4 +1,19 @@
-create or replace PACKAGE BODY pkg_evidence_products
+CREATE OR REPLACE PACKAGE pkg_evidence_products
+AS 
+
+PROCEDURE CL_THIRD_PRODUCT(p_rang IN NUMBER,
+                           p_start IN DATE,
+                           p_end IN DATE,
+                           p_name OUT produse.descriere%TYPE,
+                           p_cantitate OUT tranzactii.cantitatea%TYPE);
+                           
+FUNCTION CL_TOTAL_DATORII (p_repr_comp angajati.cod_angajat%TYPE) RETURN NUMBER;
+
+END pkg_evidence_products;
+
+
+
+CREATE OR REPLACE  PACKAGE BODY pkg_evidence_products
 IS
  v_cod NUMBER;
  v_mesaj VARCHAR2(255);

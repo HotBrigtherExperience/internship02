@@ -18,7 +18,7 @@ FROM (SELECT p.descriere,SUM(p.pret*t.cantitate) as VANZARI, RANK() OVER(ORDER B
 FROM Tranzactii t, Produse p
 WHERE t.cod_produs=p.cod_produs AND t.data_comenzii>data_min AND t.data_comenzii<data_max
 GROUP BY p.descriere)
-WHERE v_rank=1;
+WHERE v_rank=3;
 DBMS_OUTPUT.PUT_LINE('Produsul '|| v_descriere||' a inregistrat cele mai mari vanzari in perioada data: '||v_vanzari);
 EXCEPTION
 WHEN NO_DATA_FOUND THEN 

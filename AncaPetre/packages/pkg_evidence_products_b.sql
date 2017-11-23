@@ -21,7 +21,7 @@ RETURN p_datorie;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
     RETURN NULL;
-END datori; 
+END datorii_reprezntant; 
  
 PROCEDURE vanzari_produse( p_data1 DATE,
                            p_data2 DATE, 

@@ -3,8 +3,9 @@ DROP TABLE intern_ap.angajati   CASCADE CONSTRAINTS;
 DROP TABLE intern_ap.oficii     CASCADE CONSTRAINTS;
 DROP TABLE intern_ap.companii   CASCADE CONSTRAINTS;
 DROP TABLE intern_ap.tranzactii CASCADE CONSTRAINTS;
+
 DROP SEQUENCE intern_ap.pk_produse;
-DROP TABLE logs;
+DROP TABLE intern_ap.logs;
 DROP SEQUENCE intern_ap.sequence_logs;
 
 CREATE TABLE intern_ap.produse 
@@ -34,12 +35,12 @@ CREATE TABLE intern_ap.oficii
     cod_oficiu              VARCHAR2(3) PRIMARY KEY,
     localitatea             VARCHAR2(15),
     regiunea                VARCHAR2(6),
-    cod_manager             VARCHAR2(3)               REFERENCES angajati(cod_angajat) ON DELETE CASCADE
+    cod_manager             VARCHAR2(3)               REFERENCES intern_ap.angajati(cod_angajat) ON DELETE CASCADE
 );
 ALTER TABLE     intern_ap.angajati 
 ADD CONSTRAINT  new_reference 
     FOREIGN KEY(cod_oficiu) 
-    REFERENCES oficii(cod_oficiu)   
+    REFERENCES intern_ap.oficii(cod_oficiu)   
     ON DELETE CASCADE;
 
 
@@ -53,15 +54,15 @@ CREATE TABLE intern_ap.companii
 ALTER TABLE  intern_ap.companii 
 ADD CONSTRAINT  companii_reference 
     FOREIGN KEY(reprezentant_companie) 
-    REFERENCES angajati(cod_angajat) 
+    REFERENCES intern_ap.angajati(cod_angajat) 
     ON DELETE CASCADE;
 
 CREATE TABLE intern_ap.Tranzactii
 (
     data_comenzii           DATE,
-    cod_client              VARCHAR2(3)              REFERENCES companii(cod_companie) ON DELETE CASCADE,
-    cod_vanzator            VARCHAR2(3)              REFERENCES angajati(cod_angajat)  ON DELETE CASCADE,
-    cod_produs              NUMERIC                  REFERENCES produse(cod_produs)    ON DELETE CASCADE,
+    cod_client              VARCHAR2(3)              REFERENCES intern_ap.companii(cod_companie) ON DELETE CASCADE,
+    cod_vanzator            VARCHAR2(3)              REFERENCES intern_ap.angajati(cod_angajat)  ON DELETE CASCADE,
+    cod_produs              NUMERIC                  REFERENCES intern_ap.produse(cod_produs)    ON DELETE CASCADE,
     cantitatea              NUMERIC
 );
 

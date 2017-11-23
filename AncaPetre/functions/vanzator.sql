@@ -8,7 +8,7 @@ BEGIN
 SELECT a.nume, a.prenume INTO v_nume, v_prenume
 FROM   angajati a
 WHERE
-(SELECT t.cod_vanzator 
+(SELECT cod_vanzator 
  FROM ( SELECT  t.cod_vanzator, 
                 COUNT(t.cod_vanzator)
         FROM tranzactii t

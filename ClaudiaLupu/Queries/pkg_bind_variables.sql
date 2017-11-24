@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE pkg_evidence_products
+create or replace PACKAGE pkg_bind_var
 AS 
 
 PROCEDURE CL_THIRD_PRODUCT(p_rang IN NUMBER,
@@ -9,14 +9,13 @@ PROCEDURE CL_THIRD_PRODUCT(p_rang IN NUMBER,
                            
 FUNCTION CL_TOTAL_DATORII (p_repr_comp angajati.cod_angajat%TYPE) RETURN NUMBER;
 
-END pkg_evidence_products;
+END pkg_bind_var;
 
-
-
-CREATE OR REPLACE  PACKAGE BODY pkg_evidence_products
+create or replace PACKAGE BODY pkg_bind_var
 IS
  v_cod NUMBER;
  v_mesaj VARCHAR2(255);
+ v_sql VARCHAR2(32700);
 PROCEDURE CL_THIRD_PRODUCT (p_rang IN NUMBER,
                             p_start IN DATE,
                             p_end IN DATE,
@@ -24,12 +23,20 @@ PROCEDURE CL_THIRD_PRODUCT (p_rang IN NUMBER,
                             p_cantitate OUT tranzactii.cantitatea%TYPE) 
   IS 
   BEGIN
-    SELECT descriere, cantitate_vanduta INTO p_name, p_cantitate
-    FROM (SELECT pr.cod_produs, pr.descriere, SUM(tr.cantitatea) * pr.pret vanzari, SUM(tr.cantitatea) cantitate_vanduta, RANK() OVER (ORDER BY SUM(tr.cantitatea) * pr.pret DESC) AS rang
-          FROM tranzactii tr, produse pr
-          WHERE pr.cod_produs = tr.cod_produs AND tr.data_comenzii BETWEEN p_start AND p_end
-          GROUP BY pr.cod_produs, pr.descriere, pr.pret)
-    WHERE rang = p_rang;
+    v_sql := 'SELECT descriere, cantitate_vanduta' ||
+             'FROM (SELECT pr.cod_produs,' ||
+                           'pr.descriere, 
+                           SUM(tr.cantitatea) * pr.pret vanzari, 
+                           SUM(tr.cantitatea) cantitate_vanduta, 
+                           RANK() OVER (ORDER BY SUM(tr.cantitatea) * pr.pret DESC) AS rang
+                    FROM   tranzactii tr, produse pr
+                    WHERE pr.cod_produs = tr.cod_produs 
+                    AND   tr.data_comenzii BETWEEN :data_inceput AND :data_sfarsit
+                    GROUP BY pr.cod_produs, pr.descriere, pr.pret
+                    )
+              WHERE rang = :rang';
+    
+    EXECUTE IMMEDIATE v_sql INTO p_name, p_cantitate USING p_start, p_end, p_rang;
     
     DBMS_OUTPUT.PUT_LINE ('Produsul cautat este: '|| p_name || ', cantitate vanduta: '||p_cantitate);
    
@@ -44,7 +51,7 @@ PROCEDURE CL_THIRD_PRODUCT (p_rang IN NUMBER,
     DBMS_OUTPUT.PUT_LINE('Others');
     v_cod := SQLCODE;
     v_mesaj := SQLERRM;
-    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj);
+    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj); 
     
 END CL_THIRD_PRODUCT;
 
@@ -54,12 +61,12 @@ FUNCTION CL_TOTAL_DATORII (p_repr_comp angajati.cod_angajat%TYPE)
   v_datorie NUMBER;
   BEGIN
    
-    SELECT  SUM(cp.datoria) INTO v_datorie
-    FROM companii cp, angajati ag
-    WHERE cp.reprezentant_companie = ag.cod_angajat AND ag.cod_angajat = p_repr_comp
-    GROUP BY ag.cod_angajat;
-    DBMS_OUTPUT.PUT_LINE('Datoria companiei reprezentata de '|| p_repr_comp ||': '|| v_datorie);  
-  
+    v_sql := 'SELECT  SUM(cp.datoria)
+    FROM companii cp
+    WHERE cp.reprezentant_companie = :reprezentant
+    GROUP BY cp.reprezentant_companie';
+    
+    EXECUTE IMMEDIATE v_sql INTO v_datorie USING p_repr_comp;
     RETURN v_datorie; 
     
     EXCEPTION  
@@ -86,4 +93,4 @@ FUNCTION CL_TOTAL_DATORII (p_repr_comp angajati.cod_angajat%TYPE)
     
 END CL_TOTAL_DATORII;
 
-END pkg_evidence_products; --package body end
+END pkg_bind_var;

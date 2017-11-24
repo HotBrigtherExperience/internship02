@@ -24,17 +24,17 @@ PROCEDURE CL_THIRD_PRODUCT (p_rang IN NUMBER,
   IS 
   BEGIN
     v_sql := 'SELECT descriere, cantitate_vanduta' ||
-             'FROM (SELECT pr.cod_produs,' ||
-                           'pr.descriere, 
-                           SUM(tr.cantitatea) * pr.pret vanzari, 
-                           SUM(tr.cantitatea) cantitate_vanduta, 
-                           RANK() OVER (ORDER BY SUM(tr.cantitatea) * pr.pret DESC) AS rang
-                    FROM   tranzactii tr, produse pr
-                    WHERE pr.cod_produs = tr.cod_produs 
-                    AND   tr.data_comenzii BETWEEN :data_inceput AND :data_sfarsit
+             ' FROM (SELECT pr.cod_produs,' ||
+                           ' pr.descriere,' || 
+                           ' SUM(tr.cantitatea) * pr.pret vanzari,' || 
+                           ' SUM(tr.cantitatea) cantitate_vanduta,' || 
+                           ' RANK() OVER (ORDER BY SUM(tr.cantitatea) * pr.pret DESC) AS rang' ||
+                    ' FROM   tranzactii tr, produse pr' ||
+                    ' WHERE pr.cod_produs = tr.cod_produs ' ||
+                    ' AND   tr.data_comenzii BETWEEN :data_inceput AND :data_sfarsit 
                     GROUP BY pr.cod_produs, pr.descriere, pr.pret
-                    )
-              WHERE rang = :rang';
+                    )' ||
+              ' WHERE rang = :rang' ;
     
     EXECUTE IMMEDIATE v_sql INTO p_name, p_cantitate USING p_start, p_end, p_rang;
     
@@ -51,7 +51,7 @@ PROCEDURE CL_THIRD_PRODUCT (p_rang IN NUMBER,
     DBMS_OUTPUT.PUT_LINE('Others');
     v_cod := SQLCODE;
     v_mesaj := SQLERRM;
-    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj); 
+    INSERT INTO erori VALUES(USER, SYSDATE, v_cod, v_mesaj);  
     
 END CL_THIRD_PRODUCT;
 
@@ -61,10 +61,10 @@ FUNCTION CL_TOTAL_DATORII (p_repr_comp angajati.cod_angajat%TYPE)
   v_datorie NUMBER;
   BEGIN
    
-    v_sql := 'SELECT  SUM(cp.datoria)
-    FROM companii cp
-    WHERE cp.reprezentant_companie = :reprezentant
-    GROUP BY cp.reprezentant_companie';
+    v_sql := 'SELECT  SUM(cp.datoria)' ||
+              ' FROM companii cp' ||
+              ' WHERE cp.reprezentant_companie = :reprezentant
+              GROUP BY cp.reprezentant_companie';
     
     EXECUTE IMMEDIATE v_sql INTO v_datorie USING p_repr_comp;
     RETURN v_datorie; 
